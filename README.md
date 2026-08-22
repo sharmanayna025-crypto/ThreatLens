@@ -67,37 +67,6 @@ The platform combines an interactive React frontend with a Spring Boot backend a
 
 ![ThreatLens Simulation](screenshots/Simulation.png)
 
----
-
-##  System Architecture
-
-ThreatLens follows a full-stack client-server architecture:
-
-
-┌─────────────────────────────────────────────┐
-│              React Frontend                 │
-│                                             │
-│  Dashboard │ Network Map │ Threats          │
-│  Risk Analysis │ Simulations │ Login        │
-└──────────────────────┬──────────────────────┘
-                       │
-                  REST APIs
-                       │
-┌──────────────────────▼──────────────────────┐
-│            Spring Boot Backend              │
-│                                             │
-│ Authentication │ Network │ Threats          │
-│ Risk Analysis │ Simulations │ Security      │
-└──────────────────────┬──────────────────────┘
-                       │
-                  Spring Data JPA
-                       │
-┌──────────────────────▼──────────────────────┐
-│               PostgreSQL                    │
-│                                             │
-│ Users │ Network Assets │ Connections        │
-│ Threats │ Simulations                       │
-└─────────────────────────────────────────────┘
 ---                              
                        
 #  Author                                      
