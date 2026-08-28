@@ -22,7 +22,7 @@ function RiskAnalysis() {
 
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/risk",
+        "https://threalens-backend.onrender.com/api/risk",
         {
           headers: {
             Authorization: `Bearer ${token}`,

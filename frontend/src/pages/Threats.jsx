@@ -27,7 +27,7 @@ function Threats() {
       setError("");
 
       const response = await axios.get(
-        "http://localhost:8080/api/threats",
+        "https://threalens-backend.onrender.com/api/threats",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ function Threats() {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/threats/${threatId}/status`,
+        `https://threalens-backend.onrender.com/api/threats/${threatId}/status`,
         null,
         {
           params: {

@@ -32,7 +32,7 @@ function ThreatDashboard() {
       const [threatResponse, assetResponse, riskResponse] =
         await Promise.all([
           axios.get(
-            "http://localhost:8080/api/threats",
+            "https://threalens-backend.onrender.com/api/threats",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ function ThreatDashboard() {
           ),
 
           axios.get(
-            "http://localhost:8080/api/network/assets",
+            "https://threalens-backend.onrender.com/api/network/assets",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ function ThreatDashboard() {
           ),
 
           axios.get(
-            "http://localhost:8080/api/risk",
+            "https://threalens-backend.onrender.com/api/risk",
             {
               headers: {
                 Authorization: `Bearer ${token}`,

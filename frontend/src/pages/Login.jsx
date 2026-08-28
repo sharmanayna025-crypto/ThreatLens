@@ -18,7 +18,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/auth/login",
+        "https://threalens-backend.onrender.com/auth/login",
         {
           email,
           password,

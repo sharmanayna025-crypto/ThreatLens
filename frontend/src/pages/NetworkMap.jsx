@@ -10,7 +10,7 @@ import {
 import "@xyflow/react/dist/style.css";
 
 const API_URL =
-  "http://localhost:8080/api/network/connections/graph";
+  "https://threalens-backend.onrender.com/api/network/connections/graph";
 
 function NetworkMap() {
   const [nodes, setNodes] = useState([]);

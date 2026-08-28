@@ -35,7 +35,7 @@ function Simulations() {
       const [assetResponse, simulationResponse] =
         await Promise.all([
           axios.get(
-            "http://localhost:8080/api/network/assets",
+            "https://threalens-backend.onrender.com/api/network/assets",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ function Simulations() {
           ),
 
           axios.get(
-            "http://localhost:8080/api/simulations",
+            "https://threalens-backend.onrender.com/api/simulations",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -104,7 +104,7 @@ function Simulations() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/simulations",
+        "https://threalens-backend.onrender.com/api/simulations",
         {
           sourceAssetId: Number(sourceId),
           destinationAssetId: Number(destinationId),
@@ -121,7 +121,7 @@ function Simulations() {
       setResult(response.data);
 
       const historyResponse = await axios.get(
-        "http://localhost:8080/api/simulations",
+        "https://threalens-backend.onrender.com/api/simulations",
         {
           headers: {
             Authorization: `Bearer ${token}`,
