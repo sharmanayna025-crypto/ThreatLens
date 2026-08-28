@@ -12,8 +12,7 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "ThreatLensSuperSecretKeyForJwtAuthentication2026Secure";
+private static final String SECRET = System.getenv("JWT_SECRET");
 
     private static final long EXPIRATION_TIME =
             1000 * 60 * 60 * 24;
