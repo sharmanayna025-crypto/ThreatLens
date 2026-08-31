@@ -1,5 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
+
+
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -18,7 +21,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://threalens-backend.onrender.com/auth/login",
+        `${API_BASE_URL}/auth/login`,
         {
           email,
           password,

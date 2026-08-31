@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
+
 
 function Simulations() {
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ function Simulations() {
       const [assetResponse, simulationResponse] =
         await Promise.all([
           axios.get(
-            "https://threalens-backend.onrender.com/api/network/assets",
+            `${API_BASE_URL}/api/network/assets`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,7 +46,7 @@ function Simulations() {
           ),
 
           axios.get(
-            "https://threalens-backend.onrender.com/api/simulations",
+            `${API_BASE_URL}/api/simulations`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -104,7 +106,7 @@ function Simulations() {
 
     try {
       const response = await axios.post(
-        "https://threalens-backend.onrender.com/api/simulations",
+        `${API_BASE_URL}/api/simulations`,
         {
           sourceAssetId: Number(sourceId),
           destinationAssetId: Number(destinationId),
@@ -121,7 +123,7 @@ function Simulations() {
       setResult(response.data);
 
       const historyResponse = await axios.get(
-        "https://threalens-backend.onrender.com/api/simulations",
+        `${API_BASE_URL}/api/simulations`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

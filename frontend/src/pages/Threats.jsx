@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
+
 
 function Threats() {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ function Threats() {
       setError("");
 
       const response = await axios.get(
-        "https://threalens-backend.onrender.com/api/threats",
+        `${API_BASE_URL}/api/threats`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +73,7 @@ function Threats() {
 
     try {
       const response = await axios.put(
-        `https://threalens-backend.onrender.com/api/threats/${threatId}/status`,
+        `${API_BASE_URL}/api/threats/${threatId}/status`,
         null,
         {
           params: {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
+
 
 function ThreatDashboard() {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ function ThreatDashboard() {
       const [threatResponse, assetResponse, riskResponse] =
         await Promise.all([
           axios.get(
-            "https://threalens-backend.onrender.com/api/threats",
+            `${API_BASE_URL}/api/threats`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -41,7 +43,7 @@ function ThreatDashboard() {
           ),
 
           axios.get(
-            "https://threalens-backend.onrender.com/api/network/assets",
+            `${API_BASE_URL}/api/network/assets`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -50,7 +52,7 @@ function ThreatDashboard() {
           ),
 
           axios.get(
-            "https://threalens-backend.onrender.com/api/risk",
+            `${API_BASE_URL}/api/risk`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

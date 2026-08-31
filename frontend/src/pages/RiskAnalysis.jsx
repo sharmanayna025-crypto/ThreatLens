@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
+
 
 function RiskAnalysis() {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ function RiskAnalysis() {
 
     try {
       const response = await axios.get(
-        "https://threalens-backend.onrender.com/api/risk",
+        `${API_BASE_URL}/api/risk`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
