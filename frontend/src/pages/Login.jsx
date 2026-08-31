@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import ThreatLensLogo from "../components/ThreatLensLogo";
+
 
 
 import { useNavigate } from "react-router-dom";
@@ -79,22 +81,8 @@ function Login() {
         }}
       >
         <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <div
-            style={{
-              width: "52px",
-              height: "52px",
-              margin: "0 auto 15px",
-              borderRadius: "12px",
-              background: "#2563eb",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: "24px",
-              fontWeight: "bold",
-            }}
-          >
-            T
+          <div style={{ margin: "0 auto 15px" }}>
+            <ThreatLensLogo size={52} />
           </div>
 
           <h1
