@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import ThreatLensLogo from "../components/ThreatLensLogo";
 
 
 function Simulations() {
@@ -223,10 +224,7 @@ function Simulations() {
 
       <aside className="sidebar">
 
-        <div className="logo">
-          <div className="logo-icon">T</div>
-          <span>ThreatLens</span>
-        </div>
+        <ThreatLensLogo size={40} />
 
         <nav>
 

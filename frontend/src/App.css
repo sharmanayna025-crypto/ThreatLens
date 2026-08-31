@@ -876,3 +876,27 @@ input:focus {
     padding: 14px 16px;
   }
 }
+/* =========================================================
+   ThreatLens Brand Logo
+   ========================================================= */
+
+.threatlens-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.threatlens-shield {
+  display: block;
+  flex-shrink: 0;
+}
+
+.threatlens-wordmark {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #f8fafc;
+  white-space: nowrap;
+}
