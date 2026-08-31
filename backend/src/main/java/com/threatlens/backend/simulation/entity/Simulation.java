@@ -1,11 +1,13 @@
 package com.threatlens.backend.simulation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.threatlens.backend.network.entity.NetworkAsset;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "simulations")
 @Getter
