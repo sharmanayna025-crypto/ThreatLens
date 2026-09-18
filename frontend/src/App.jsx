@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";		
 import ThreatDashboard from "./pages/ThreatDashboard";
 import NetworkMap from "./pages/NetworkMap";
 import Threats from "./pages/Threats";
@@ -36,7 +37,10 @@ function App() {
           path="/login"
           element={<Login />}
         />
-
+<Route
+  path="/register"
+  element={<Register />}
+/>
         <Route
           path="/dashboard"
           element={
