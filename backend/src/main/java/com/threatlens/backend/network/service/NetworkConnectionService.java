@@ -86,57 +86,52 @@ public class NetworkConnectionService {
 
         connectionRepository.delete(connection);
     }
-public NetworkGraphResponse getNetworkGraph() {
+    public NetworkGraphResponse getNetworkGraph() {
 
-    List<NetworkConnection> connections =
-            connectionRepository.findAll();
+        List<NetworkAsset> assets = assetRepository.findAll();
 
-    Map<Long, NetworkGraphNode> nodeMap = new HashMap<>();
+        List<NetworkConnection> connections =
+                connectionRepository.findAll();
 
-    List<NetworkGraphEdge> edges = new ArrayList<>();
+        Map<Long, NetworkGraphNode> nodeMap = new HashMap<>();
 
-    for (NetworkConnection connection : connections) {
+        List<NetworkGraphEdge> edges = new ArrayList<>();
 
-        NetworkAsset source = connection.getSourceAsset();
-        NetworkAsset destination = connection.getDestinationAsset();
+        // Add ALL assets as graph nodes
+        for (NetworkAsset asset : assets) {
 
-        nodeMap.putIfAbsent(
-                source.getId(),
-                new NetworkGraphNode(
-                        source.getId().toString(),
-                        source.getName(),
-                        source.getDeviceType(),
-                        source.getIpAddress(),
-                        source.getRiskLevel()
-                )
+            nodeMap.put(
+                    asset.getId(),
+                    new NetworkGraphNode(
+                            asset.getId().toString(),
+                            asset.getName(),
+                            asset.getDeviceType(),
+                            asset.getIpAddress(),
+                            asset.getRiskLevel()
+                    )
+            );
+        }
+
+        // Add connections as graph edges
+        for (NetworkConnection connection : connections) {
+
+            NetworkAsset source = connection.getSourceAsset();
+            NetworkAsset destination = connection.getDestinationAsset();
+
+            edges.add(
+                    new NetworkGraphEdge(
+                            "connection-" + connection.getId(),
+                            source.getId().toString(),
+                            destination.getId().toString(),
+                            connection.getProtocol(),
+                            connection.getPort(),
+                            connection.getConnectionType()
+                    )
+            );
+        }
+
+        return new NetworkGraphResponse(
+                new ArrayList<>(nodeMap.values()),
+                edges
         );
-
-        nodeMap.putIfAbsent(
-                destination.getId(),
-                new NetworkGraphNode(
-                        destination.getId().toString(),
-                        destination.getName(),
-                        destination.getDeviceType(),
-                        destination.getIpAddress(),
-                        destination.getRiskLevel()
-                )
-        );
-
-        edges.add(
-                new NetworkGraphEdge(
-                        "connection-" + connection.getId(),
-                        source.getId().toString(),
-                        destination.getId().toString(),
-                        connection.getProtocol(),
-                        connection.getPort(),
-                        connection.getConnectionType()
-                )
-        );
-    }
-
-    return new NetworkGraphResponse(
-            new ArrayList<>(nodeMap.values()),
-            edges
-    );
-}
-}
+    }}
