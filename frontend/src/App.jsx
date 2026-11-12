@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Register from "./pages/Register";		
+import Register from "./pages/Register";
+import { isTokenValid } from "./auth";
 import ThreatDashboard from "./pages/ThreatDashboard";
 import NetworkMap from "./pages/NetworkMap";
 import Threats from "./pages/Threats";
@@ -14,9 +15,7 @@ import RiskAnalysis from "./pages/RiskAnalysis";
 import Simulations from "./pages/Simulations";
 
 function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
+  if (!isTokenValid()) {
     return <Navigate to="/login" replace />;
   }
 
@@ -35,12 +34,22 @@ function App() {
 
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            isTokenValid()
+              ? <Navigate to="/dashboard" replace />
+              : <Login />
+          }
         />
-<Route
-  path="/register"
-  element={<Register />}
-/>
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
         <Route
           path="/dashboard"
           element={

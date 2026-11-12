@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
-import ThreatLensLogo from "../components/ThreatLensLogo";
+import Sidebar from "../components/Sidebar";
 
 
 function RiskAnalysis() {
-  const navigate = useNavigate();
-
   const [risk, setRisk] = useState(null);
   const [error, setError] = useState("");
 
@@ -140,61 +137,7 @@ function RiskAnalysis() {
 
       {/* ================= SIDEBAR ================= */}
 
-      <aside className="sidebar">
-
-        <ThreatLensLogo size={40} />
-
-        <nav>
-
-          <button
-            className="nav-item"
-            onClick={() => navigate("/dashboard")}
-          >
-            <span>▣</span>
-            Dashboard
-          </button>
-
-          <button
-            className="nav-item"
-            onClick={() => navigate("/network")}
-          >
-            <span>⌁</span>
-            Network Map
-          </button>
-
-          <button
-            className="nav-item"
-            onClick={() => navigate("/threats")}
-          >
-            <span>⚠</span>
-            Threats
-          </button>
-
-          <button className="nav-item active">
-            <span>◈</span>
-            Risk Analysis
-          </button>
-
-          <button
-            className="nav-item"
-            onClick={() => navigate("/simulations")}
-          >
-            <span>◉</span>
-            Simulations
-          </button>
-
-        </nav>
-
-        <div className="sidebar-bottom">
-
-          <div className="system-status">
-            <span className="status-dot"></span>
-            System Online
-          </div>
-
-        </div>
-
-      </aside>
+      <Sidebar active="risk" />
 
       {/* ================= MAIN ================= */}
 

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/risk")
-@CrossOrigin(origins = "http://localhost:5173")
 public class RiskController {
 
     private final RiskService riskService;

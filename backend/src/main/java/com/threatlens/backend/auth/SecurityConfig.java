@@ -98,6 +98,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/register",
                                 "/auth/login",
+                                "/health",
                                 "/error"
                         )
                         .permitAll()

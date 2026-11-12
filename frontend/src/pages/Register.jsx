@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ThreatLensLogo from "../components/ThreatLensLogo";
 import { API_BASE_URL } from "../config";
+import { warmUpServer } from "../auth";
 
 function Register() {
   const navigate = useNavigate();
@@ -15,6 +16,11 @@ function Register() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    warmUpServer();
+  }, []);
   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
@@ -30,8 +36,13 @@ function Register() {
     setError("");
     setSuccess("");
 
-    if (!form.name || !form.email || !form.password) {
+    if (!form.name.trim() || !form.email.trim() || !form.password) {
       setError("Please fill in all fields.");
+      return;
+    }
+
+    if (form.password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -46,16 +57,18 @@ function Register() {
         navigate("/login");
       }, 1200);
     } catch (err) {
-      console.error("REGISTRATION ERROR:", err);
+      const data = err.response?.data;
+      const serverMessage =
+        typeof data === "string" ? data : data?.message;
 
-      if (err.response?.data) {
+      if (axios.isAxiosError(err) && !err.response) {
         setError(
-          typeof err.response.data === "string"
-            ? err.response.data
-            : "Registration failed. Please try again."
+          "The server may be waking up after inactivity. Please wait about a minute and try again."
         );
       } else {
-        setError("Unable to connect to the server.");
+        setError(
+          serverMessage || "Registration failed. Please try again."
+        );
       }
     } finally {
       setLoading(false);
@@ -64,6 +77,7 @@ function Register() {
 
   return (
     <div
+      className="auth-page"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -74,6 +88,7 @@ function Register() {
       }}
     >
       <div
+        className="auth-card"
         style={{
           width: "100%",
           maxWidth: "420px",
@@ -192,6 +207,7 @@ function Register() {
 
             <input
               type="email"
+              autoComplete="email"
               name="email"
               value={form.email}
               onChange={handleChange}
@@ -221,12 +237,15 @@ function Register() {
               Password
             </label>
 
-            <input
-              type="password"
+            <div className="pw-field">
+              <input
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
               name="password"
               value={form.password}
               onChange={handleChange}
-              placeholder="Create a password"
+              placeholder="At least 8 characters"
+              minLength={8}
               style={{
                 width: "100%",
                 boxSizing: "border-box",
@@ -238,6 +257,15 @@ function Register() {
                 outline: "none",
               }}
             />
+              <button
+                type="button"
+                className="pw-toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
 
           <button

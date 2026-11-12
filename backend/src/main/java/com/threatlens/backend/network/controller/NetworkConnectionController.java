@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/network/connections")
-@CrossOrigin(origins = "http://localhost:5173")
 public class NetworkConnectionController {
 
     private final NetworkConnectionService connectionService;

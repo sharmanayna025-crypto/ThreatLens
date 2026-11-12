@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   ReactFlow,
   Background,
@@ -7,6 +8,7 @@ import {
   MiniMap,
 } from "@xyflow/react";
 import { API_BASE_URL } from "../config";
+import { clearToken } from "../auth";
 
 import "@xyflow/react/dist/style.css";
 
@@ -15,6 +17,7 @@ const CONNECTIONS_API = `${API_BASE_URL}/api/network/connections`;
 const GRAPH_API = `${API_BASE_URL}/api/network/connections/graph`;
 
 function NetworkMap() {
+  const navigate = useNavigate();
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [assets, setAssets] = useState([]);
@@ -370,6 +373,7 @@ function NetworkMap() {
 
   return (
     <div
+      className="network-map-page"
       style={{
         width: "100%",
         height: "100vh",
@@ -378,6 +382,7 @@ function NetworkMap() {
       }}
     >
       <div
+        className="network-map-panel network-map-title"
         style={{
           position: "absolute",
           zIndex: 10,
@@ -408,9 +413,27 @@ function NetworkMap() {
         >
           Live infrastructure visualization
         </div>
+
+        <button
+          className="map-back-btn"
+          onClick={() => navigate("/dashboard")}
+          style={{
+            marginTop: "12px",
+            padding: "7px 12px",
+            borderRadius: "8px",
+            border: "1px solid #334155",
+            background: "transparent",
+            color: "#cbd5e1",
+            cursor: "pointer",
+            fontSize: "12px",
+          }}
+        >
+          ← Back to Dashboard
+        </button>
       </div>
 
       <div
+        className="network-map-actions"
         style={{
           position: "absolute",
           zIndex: 10,
@@ -463,6 +486,23 @@ function NetworkMap() {
         >
           ↻ Refresh
         </button>
+
+        <button
+          onClick={() => {
+            clearToken();
+            navigate("/login", { replace: true });
+          }}
+          style={{
+            padding: "10px 16px",
+            borderRadius: "8px",
+            border: "1px solid #334155",
+            background: "#0f172a",
+            color: "#fca5a5",
+            cursor: "pointer",
+          }}
+        >
+          Log out
+        </button>
       </div>
 
       {error && (
@@ -503,6 +543,7 @@ function NetworkMap() {
       </ReactFlow>
 
       <div
+        className="network-map-panel network-map-legend"
         style={{
           position: "absolute",
           zIndex: 10,
@@ -556,6 +597,7 @@ function NetworkMap() {
 
       {showAssetForm && (
         <div
+          className="network-map-form"
           style={{
             position: "absolute",
             zIndex: 30,
@@ -783,6 +825,7 @@ function NetworkMap() {
 
       {showConnectionForm && (
         <div
+          className="network-map-form"
           style={{
             position: "absolute",
             zIndex: 30,

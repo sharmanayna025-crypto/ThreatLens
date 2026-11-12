@@ -45,6 +45,30 @@ The platform combines an interactive React frontend with a Spring Boot backend a
 
 ---
 
+## Running locally
+
+**Backend** (Java 21, PostgreSQL)
+
+```bash
+cd backend
+export DB_URL=jdbc:postgresql://localhost:5432/threatlens
+export DB_USERNAME=postgres
+export DB_PASSWORD=your_password
+export JWT_SECRET=at-least-32-characters-long-random-string
+./mvnw spring-boot:run
+```
+
+**Frontend**
+
+```bash
+cd frontend
+cp .env.example .env   # set VITE_API_BASE_URL=http://localhost:8080 for local dev
+npm install
+npm run dev
+```
+
+---
+
 ##  Screenshots
 
 ### Dashboard

@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import ThreatLensLogo from "../components/ThreatLensLogo";
-
-
-
+import { warmUpServer } from "../auth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -14,6 +12,12 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [waking, setWaking] = useState(false);
+
+  useEffect(() => {
+    warmUpServer();
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,15 +26,33 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      // The backend may be asleep (Render free tier). Retry network failures
+      // for up to ~1 minute instead of failing on the first attempt.
+      const MAX_ATTEMPTS = 8;
+      const RETRY_DELAY_MS = 8000;
+      let response;
 
-      console.log("LOGIN RESPONSE:", response.data);
+      for (let attempt = 1; ; attempt++) {
+        try {
+          response = await axios.post(`${API_BASE_URL}/auth/login`, {
+            email,
+            password,
+          });
+          break;
+        } catch (err) {
+          const noResponse = axios.isAxiosError(err) && !err.response;
+
+          if (noResponse && attempt < MAX_ATTEMPTS) {
+            setWaking(true);
+            await new Promise((resolve) =>
+              setTimeout(resolve, RETRY_DELAY_MS)
+            );
+            continue;
+          }
+
+          throw err;
+        }
+      }
 
       const token = response.data.token;
 
@@ -42,25 +64,29 @@ function Login() {
 
       navigate("/dashboard");
     } catch (err) {
-      console.error("LOGIN ERROR:", err);
-      console.error("STATUS:", err.response?.status);
-      console.error("DATA:", err.response?.data);
+      const status = err.response?.status;
+      const data = err.response?.data;
+      const serverMessage =
+        typeof data === "string" ? data : data?.message;
 
-      if (err.response?.status === 401) {
+      if (axios.isAxiosError(err) && !err.response) {
+        setError(
+          "Unable to reach the server. It may be waking up - please try again in a few seconds."
+        );
+      } else if (status === 401) {
         setError("Invalid email or password.");
       } else {
-        setError(
-          err.response?.data?.message ||
-          "Unable to connect to the server."
-        );
+        setError(serverMessage || "Something went wrong. Please try again.");
       }
     } finally {
+      setWaking(false);
       setLoading(false);
     }
   };
 
   return (
     <div
+      className="auth-page"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -71,6 +97,7 @@ function Login() {
       }}
     >
       <div
+        className="auth-card"
         style={{
           width: "100%",
           maxWidth: "420px",
@@ -118,6 +145,7 @@ function Login() {
 
           <input
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
@@ -145,8 +173,10 @@ function Login() {
             Password
           </label>
 
-          <input
-            type="password"
+          <div className="pw-field">
+            <input
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
@@ -163,6 +193,32 @@ function Login() {
               fontSize: "15px",
             }}
           />
+            <button
+              type="button"
+              className="pw-toggle"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {waking && (
+            <div
+              style={{
+                background: "rgba(49,199,244,0.10)",
+                border: "1px solid rgba(49,199,244,0.30)",
+                color: "#8fe3fb",
+                padding: "12px",
+                borderRadius: "8px",
+                marginBottom: "20px",
+                fontSize: "14px",
+              }}
+            >
+              The server is waking up after a period of inactivity. This can
+              take up to a minute - signing you in automatically...
+            </div>
+          )}
 
           {error && (
             <div
@@ -194,7 +250,7 @@ function Login() {
               cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {waking ? "Waking up server..." : loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 

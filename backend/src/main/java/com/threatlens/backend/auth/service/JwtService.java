@@ -12,12 +12,18 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-private static final String SECRET = System.getenv("JWT_SECRET");
+    private static final String SECRET = System.getenv("JWT_SECRET");
 
     private static final long EXPIRATION_TIME =
             1000 * 60 * 60 * 24;
 
     private SecretKey getSigningKey() {
+        if (SECRET == null || SECRET.length() < 32) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable must be set to at least 32 characters"
+            );
+        }
+
         return Keys.hmacShaKeyFor(
                 SECRET.getBytes(StandardCharsets.UTF_8)
         );

@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/network/assets")
-@CrossOrigin(origins = "http://localhost:5173")
 public class NetworkAssetController {
 
     private final NetworkAssetService networkAssetService;
